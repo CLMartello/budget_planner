@@ -28,7 +28,7 @@ def main():
 
 		elif option == "3":
 			acc = input("Account: ")
-			lab = planner.accounts[acc].get_balance()
+			bal = planner.accounts[acc].get_balance()
 			print("Balance:", bal)
 
 		elif option == "0":
