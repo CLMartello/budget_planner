@@ -11,3 +11,20 @@ class Account:
 
 	def get_balance(self) -> float:
 		return sum(t.amount for t in self.transactions)
+
+	def to_dict(self) -> dict:
+		return {
+			"name": self.name,
+			"transactions": [t.to_dict() for t in self.transactions]
+		}
+
+	@classmethod
+	def from_dict(cls, data: dict):
+		from .transaction impot Transaction
+		account = cls(data["name"])
+		account.transactions = [
+			Transaction.from_dict(t)
+			for t in data.get("transactions", [])
+		]
+		return account
+
