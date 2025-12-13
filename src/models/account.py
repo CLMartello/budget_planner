@@ -20,7 +20,7 @@ class Account:
 
 	@classmethod
 	def from_dict(cls, data: dict):
-		from .transaction impot Transaction
+		from .transaction import Transaction
 		account = cls(data["name"])
 		account.transactions = [
 			Transaction.from_dict(t)
