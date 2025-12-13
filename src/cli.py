@@ -16,6 +16,7 @@ def main():
 		if option == "1":
 			name = input("Account name: ")
 			planner.create_account(name)
+			planner.save()
 			print("Account created!")
 
 		elif option == "2":
@@ -24,11 +25,13 @@ def main():
 			cat = input("Category: ")
 			tx = Transaction(amount, cat)
 			planner.accounts[acc].add_transaction(tx)
+			planner.save()
 			print("Transaction added!")
 
 		elif option == "3":
 			acc = input("Account: ")
 			bal = planner.accounts[acc].get_balance()
+			planner.save()
 			print("Balance:", bal)
 
 		elif option == "0":
