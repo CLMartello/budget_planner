@@ -10,11 +10,11 @@ Phase 1 – Project Setup (Core Foundation)
 [x] Plan OOP architecture (UML class diagram)
 
 Phase 2 – Core OOP Implementation
-[ ] Create Transaction class
-[ ] Create Account class
-[ ] Create StorageManager class for file persistence
-[ ] Create BudgetPlanner class to manage accounts
-[ ] Implement serialization (to_dict / from_dict)
+[x] Create Transaction class
+[x] Create Account class
+[x] Create StorageManager class for file persistence
+[x] Create BudgetPlanner class to manage accounts
+[x] Implement serialization (to_dict / from_dict)
 [ ] Write initial unit tests for core classes
 
 Phase 3 – CLI Interface
