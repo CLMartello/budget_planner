@@ -10,3 +10,21 @@ class Transaction:
 	def __repr__(self):
 		return f"<Transaction {self.amount} {self.category} on {self.fate}>"
 
+	def to_dict(self) -> dict:
+		return {
+			"amount": self.amount,
+			"category": self.category,
+			"description": self.description,
+			"date": self.date.isoformat()
+		}
+
+	@classmethod
+	def from_dict(cls, data: dict):
+		from datetime import datetime
+		return cls(
+			amount=data["amount"],
+			category=data["category"],
+			description=data.get("description", ""),
+			date=datetime.fromisoformat(data["date"])
+		)
+
