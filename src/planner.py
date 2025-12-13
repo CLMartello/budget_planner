@@ -6,6 +6,7 @@ class	BudgetPlanner:
 	def __init__(self):
 		self.storage = StorageManager()
 		self.accounts: dict[str, Account] = {}
+		self.load()
 
 	def create_account(self, name: str):
 		if name in self.accounts:
@@ -14,4 +15,20 @@ class	BudgetPlanner:
 
 	def get_account(self, name: str) -> Account:
 		return self.accounts.get(name)
+
+	def load(self):
+		raw_data = self.storage.load()
+		from models.account import Account
+
+		self.accounts = {
+			name: Account.from_dict(data)
+			for name, data in raw_data.items()
+		}
+
+	def save(self):
+		data = {
+			name: account.to_dict()
+			for name, account in self.accounts.items()
+		}
+		self.storage.save(data)
 
