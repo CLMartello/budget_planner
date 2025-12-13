@@ -69,11 +69,13 @@ classDiagram
 budget_planner/
 │
 ├── src/
-│   ├── budget_planner.py
-│   ├── account.py
-│   ├── transaction.py
-│   ├── storage_manager.py
-│   └── main.py
+│   ├── cli.py
+|   ├── planner.py
+│   ├── models/
+|   |   ├── account.py
+|   |   └── transaction.py  
+│   └── services/
+│       └── storage_manager.py
 │
 ├── data/
 │   └── storage.json
