@@ -8,7 +8,7 @@ class Transaction:
 		self.date = date if date else datetime.now()
 
 	def __repr__(self):
-		return f"<Transaction {self.amount} {self.category} on {self.fate}>"
+		return f"<Transaction {self.amount} {self.category} on {self.date}>"
 
 	def to_dict(self) -> dict:
 		return {
