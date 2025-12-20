@@ -1,7 +1,7 @@
 
 from planner import BudgetPlanner
 
-def test_create_account(tmp_path)
+def test_create_account(tmp_path):
 	test_file = tmp_path / "test.json"
 
 	planner = BudgetPlanner(storage_path=test_file)
