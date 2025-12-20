@@ -15,7 +15,7 @@ Phase 2 – Core OOP Implementation
 [x] Create StorageManager class for file persistence
 [x] Create BudgetPlanner class to manage accounts
 [x] Implement serialization (to_dict / from_dict)
-[ ] Write initial unit tests for core classes
+[x] Write initial unit tests for core classes
 
 Phase 3 – CLI Interface
 [ ] Create main CLI menu
