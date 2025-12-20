@@ -3,8 +3,8 @@ from models.account import Account
 from services.storage_manager import StorageManager
 
 class	BudgetPlanner:
-	def __init__(self):
-		self.storage = StorageManager()
+	def __init__(self, storage_path="data/accounts.json"):
+		self.storage = StorageManager(storage_path)
 		self.accounts: dict[str, Account] = {}
 		self.load()
 
