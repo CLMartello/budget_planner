@@ -33,6 +33,14 @@ class	BudgetPlanner:
 
 		del self.accounts[source]
 
+	def edit_last_transaction(self, account_name, amount, category, description):
+		if account_name not in self.accounts:
+			raise ValueError("Account does not exist.")
+
+		self.accounts[account_name].edit_last_transaction(
+			amount, category, description
+		)
+
 	def load(self):
 		raw_data = self.storage.load()
 		from models.account import Account
