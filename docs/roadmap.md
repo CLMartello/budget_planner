@@ -14,23 +14,23 @@ Phase 2 – Core OOP Implementation
 [x] Create Account class
 [x] Create StorageManager class for file persistence
 [x] Create BudgetPlanner class to manage accounts
-[x] Implement serialization (to_dict / from_dict)
+[ ] Implement serialization (to_dict / from_dict)
 [x] Write initial unit tests for core classes
 
 Phase 3 – CLI Interface
 [x] Create main CLI menu
-[ ] Implement account management in CLI:
+[x] Implement account management in CLI:
 	[x] Create account
 	[ ] Remove account
-	[ ] Merge accounts
+	[x] Merge accounts
 	[x] List all accounts
-[ ] Implement transaction management in CLI:
+[x] Implement transaction management in CLI:
 	[x] Add transaction
-	[ ] Edit last transaction
-	[ ] List incomes and expenses
-	[ ] Discriminate expenses by category or date
-[ ] Implement fund transfer between accounts
-[ ] Display account history and balance
+	[x] Edit last transaction
+	[x] List incomes and expenses
+	[x] Discriminate expenses by category or date
+[x] Implement fund transfer between accounts
+[x] Display account history and balance
 
 Phase 4 – Analytics & Reporting
 [ ] Implement semester balance calculation
