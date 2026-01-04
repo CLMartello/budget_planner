@@ -9,7 +9,7 @@ class Account:
 	def add_transaction(self, transaction: Transaction):
 		self.transactions.append(transaction)
 
-	def get_balance(self) -> float:
+	def balance(self):
 		return sum(t.amount for t in self.transactions)
 
 	def history(self):

@@ -1,5 +1,6 @@
 
 from models.account import Account
+from models.transaction import Transaction
 from services.storage_manager import StorageManager
 
 class	BudgetPlanner:
@@ -37,12 +38,8 @@ class	BudgetPlanner:
 		if account_name not in self.accounts:
 			raise ValueError("Account does not exist.")
 
-		self.accounts[account_name].add_transaction(
-			amount=amount,
-			category=category,
-			decription=description,
-			date=date
-		)
+		t = Transaction(amount, category, description, date)
+		self.accounts[account_name].add_transaction(t)
 
 	def edit_last_transaction(self, account_name, amount, category, description):
 		if account_name not in self.accounts:
@@ -66,7 +63,7 @@ class	BudgetPlanner:
 			raise ValueError("Insuficiente funds.")
 
 		source_acc.add_transaction(-amount, "transfer", f"Transfer to {target}")
-		target_acc.add_transaction(-amount, "transfer", f"Transfer to {source}")
+		target_acc.add_transaction(amount, "transfer", f"Transfer to {source}")
 
 	def get_income_and_expenses(self):
 		income = 0

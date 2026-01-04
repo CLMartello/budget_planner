@@ -85,7 +85,7 @@ def main():
 			elif option == "7":
 				source = input("From account: ")
 				target = input("To account: ")
-				amount = floar(input("Amount: "))
+				amount = float(input("Amount: "))
 
 				planner.transfer_funds(source, target, amount)
 				print("Transfer completed.")
@@ -93,13 +93,13 @@ def main():
 			# ACCOUNT HISTORY AND BALANCE
 			elif option == "8":
 				account = input("Account name: ")
-				acc = planner.accounts[accounts]
+				acc = planner.accounts[account]
 
 				print("\nTransactions:")
 				for t in acc.transactions:
 					print(t)
 
-				print(f"\nBalance: {acc.balance:.2f}")
+				print(f"\nBalance: {acc.balance():.2f}")
 
 			# LIST INCOMES AND EXPENSES
 			elif option == "9":
