@@ -33,6 +33,17 @@ class	BudgetPlanner:
 
 		del self.accounts[source]
 
+	def add_transaction(self, account_name, amount, category, description, date=None):
+		if account_name not in self.accounts:
+			raise ValueError("Account does not exist.")
+
+		self.accounts[account_name].add_transaction(
+			amount=amount,
+			category=category,
+			decription=description,
+			date=date
+		)
+
 	def edit_last_transaction(self, account_name, amount, category, description):
 		if account_name not in self.accounts:
 			raise ValueError("Account does not exist.")

@@ -12,7 +12,7 @@ class Account:
 	def get_balance(self) -> float:
 		return sum(t.amount for t in self.transactions)
 
-	def history(self)
+	def history(self):
 		return self.transactions
 
 	def edit_last_transaction(self, amount, category, description):
