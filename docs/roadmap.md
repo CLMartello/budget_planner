@@ -18,14 +18,14 @@ Phase 2 – Core OOP Implementation
 [x] Write initial unit tests for core classes
 
 Phase 3 – CLI Interface
-[ ] Create main CLI menu
+[x] Create main CLI menu
 [ ] Implement account management in CLI:
-	[ ] Create account
+	[x] Create account
 	[ ] Remove account
 	[ ] Merge accounts
-	[ ] List all accounts
+	[x] List all accounts
 [ ] Implement transaction management in CLI:
-	[ ] Add transaction
+	[x] Add transaction
 	[ ] Edit last transaction
 	[ ] List incomes and expenses
 	[ ] Discriminate expenses by category or date
