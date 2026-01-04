@@ -41,6 +41,22 @@ class	BudgetPlanner:
 			amount, category, description
 		)
 
+	def transfer_funds(self, source, target, amount):
+		if source not in self.accounts or target not in self.accounts:
+			raise ValueError("One or both accounts do not exist.")
+
+		if amount <= 0:
+			raise ValueError("Amount must be positive.")
+
+		source_acc = self.accounts[source]
+		target_acc = self.accounts[target]
+
+		if source_acc.balance < amount:
+			raise ValueError("Insuficiente funds.")
+
+		source_acc.add_transaction(-amount, "transfer", f"Transfer to {target}")
+		target_acc.add_transaction(-amount, "transfer", f"Transfer to {source}")
+
 	def load(self):
 		raw_data = self.storage.load()
 		from models.account import Account
