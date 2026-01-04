@@ -21,6 +21,18 @@ class	BudgetPlanner:
 			raise ValueError("Account does not exist.")
 		del self.accounts[name]
 
+	def merge_accounts(self, source: str, target: str):
+		if source not in self.accounts or target not in self.accounts:
+			raise ValueError("One or both accounts do not exist.")
+
+		source_acc = self.accounts[source]
+		target_acc = self.accounts[target]
+
+		for transaction in source_acc.transactions:
+			target_acc.transactions.append(transaction)
+
+		del self.accounts[source]
+
 	def load(self):
 		raw_data = self.storage.load()
 		from models.account import Account
