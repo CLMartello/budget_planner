@@ -36,7 +36,7 @@ def main():
 			if option == "1":
 				name = input("Account name: ")
 				planner.create_account(name)
-				print("Account created!")
+				print("Account created.")
 
 			# REMOVE ACCOUNT
 			elif option == "2":

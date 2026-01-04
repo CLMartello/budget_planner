@@ -16,6 +16,11 @@ class	BudgetPlanner:
 	def get_account(self, name: str) -> Account:
 		return self.accounts.get(name)
 
+	def remove_account(self, name: str):
+		if name not in self.accounts:
+			raise ValueError("Account does not exist.")
+		del self.accounts[name]
+
 	def load(self):
 		raw_data = self.storage.load()
 		from models.account import Account
