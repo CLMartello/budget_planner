@@ -57,6 +57,19 @@ class	BudgetPlanner:
 		source_acc.add_transaction(-amount, "transfer", f"Transfer to {target}")
 		target_acc.add_transaction(-amount, "transfer", f"Transfer to {source}")
 
+	def get_income_and_expenses(self):
+		income = 0
+		expenses = 0
+
+		for account in self.accounts.values():
+			for t in account.transactions:
+				if t.amount > 0:
+					income += t.amount
+				else:
+					expenses += abs(t.amount)
+
+		return income, expenses
+
 	def load(self):
 		raw_data = self.storage.load()
 		from models.account import Account
