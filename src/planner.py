@@ -70,6 +70,16 @@ class	BudgetPlanner:
 
 		return income, expenses
 
+	def get_expenses_by_category(self, category):
+		expenses = []
+
+		for account in self.accounts.values():
+			for t in account.transactions:
+				if t.amount < 0 and t.category == category:
+					expenses.append(t)
+
+		return expenses
+
 	def load(self):
 		raw_data = self.storage.load()
 		from models.account import Account
