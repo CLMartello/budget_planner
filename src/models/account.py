@@ -1,5 +1,6 @@
 
 from .transaction import Transaction
+from datetime import datetime
 
 class Account:
 	def __init__(self, name: str):
@@ -10,7 +11,7 @@ class Account:
 	def add_transaction(self, transaction: Transaction):
 		self.transactions.append(transaction)
 
-	def balance(self):
+	def get_balance(self):
 		return sum(t.amount for t in self.transactions)
 
 	def history(self):
@@ -36,7 +37,7 @@ class Account:
 	def to_dict(self) -> dict:
 		return {
 			"name": self.name,
-			"transactions": [t.to_dict() for t in self.transactions]
+			"transactions": [t.to_dict() for t in self.transactions],
 			"logs": self.logs
 		}
 

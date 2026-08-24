@@ -21,4 +21,5 @@ def test_transaction_serialization():
 	assert restored.amount == 200
 	assert restored.category == "Bonus"
 	assert restored.description == "Year end"
+	assert restored.date == t.date
 
