@@ -48,6 +48,7 @@ Phase 6 – Testing
 	[ ] Account methods
 	[ ] Transaction methods
 	[ ] BudgetPlanner methods
+		[x] Fund transfers
 	[ ] StorageManager methods
 [ ] Implement CLI I/O mocking for automated testing
 [ ] Ensure 100% coverage of core logic

@@ -74,7 +74,7 @@ def main():
 				account = input("Account name: ")
 				amount = float(input("New amount: "))
 				category = input("New category: ")
-				decription = input("New description: ")
+				description = input("New description: ")
 
 				planner.edit_last_transaction(
 					account, amount, category, description
@@ -99,7 +99,7 @@ def main():
 				for t in acc.transactions:
 					print(t)
 
-				print(f"\nBalance: {acc.balance():.2f}")
+				print(f"\nBalance: {acc.get_balance():.2f}")
 
 			# LIST INCOMES AND EXPENSES
 			elif option == "9":

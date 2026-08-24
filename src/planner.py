@@ -59,11 +59,23 @@ class	BudgetPlanner:
 		source_acc = self.accounts[source]
 		target_acc = self.accounts[target]
 
-		if source_acc.balance < amount:
+		if source_acc.get_balance() < amount:
 			raise ValueError("Insuficiente funds.")
 
-		source_acc.add_transaction(-amount, "transfer", f"Transfer to {target}")
-		target_acc.add_transaction(amount, "transfer", f"Transfer to {source}")
+		source_acc.add_transaction(
+			Transaction(
+				-amount,
+				"transfer",
+				f"Transfer to {target}"
+			)
+		)
+		target_acc.add_transaction(
+			Transaction(
+				amount,
+				"transfer",
+				f"Transfer to {source}"
+			)
+		)
 
 	def get_income_and_expenses(self):
 		income = 0
