@@ -46,6 +46,7 @@ Phase 5 – Persistence & Data Handling
 Phase 6 – Testing
 [ ] Write unit tests for:
 	[ ] Account methods
+		[x] Account log serialization
 	[ ] Transaction methods
 	[ ] BudgetPlanner methods
 		[x] Fund transfers

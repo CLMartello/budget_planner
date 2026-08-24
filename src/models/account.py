@@ -49,5 +49,6 @@ class Account:
 			Transaction.from_dict(t)
 			for t in data.get("transactions", [])
 		]
+		account.logs = data.get("logs", [])
 		return account
 

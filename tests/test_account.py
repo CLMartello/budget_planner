@@ -31,3 +31,13 @@ def test_account_serialization():
 	assert restored.name == "Savings"
 	assert restored.get_balance() == 500
 
+def test_account_logs_serialization():
+	account = Account("Personal")
+	account.add_transaction(Transaction(100, "Salary"))
+	account.edit_last_transaction(150, "Bonus", "Updated income")
+
+	data = account.to_dict()
+	restored = Account.from_dict(data)
+
+	assert restored.logs == account.logs
+
