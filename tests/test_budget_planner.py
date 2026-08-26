@@ -1,5 +1,6 @@
 
 from planner import BudgetPlanner
+import pytest
 
 def test_create_account(tmp_path):
 	test_file = tmp_path / "test.json"
@@ -36,3 +37,19 @@ def test_transfer_funds(tmp_path):
 
 	assert planner.accounts["Checking"].get_balance() == 70
 	assert planner.accounts["Savings"].get_balance() == 30
+
+def test_transfer_insufficient_funds(tmp_path):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+
+	planner.create_account("Checking")
+	planner.create_account("Savings")
+	planner.add_transaction(
+		"Checking",
+		100,
+		"Income",
+		"Initial deposit"
+	)
+
+	with pytest.raises(ValueError, match="Insufficient funds"):
+		planner.transfer_funds("Checking", "Savings", 200)

@@ -60,7 +60,7 @@ class	BudgetPlanner:
 		target_acc = self.accounts[target]
 
 		if source_acc.get_balance() < amount:
-			raise ValueError("Insuficiente funds.")
+			raise ValueError("Insufficient funds.")
 
 		source_acc.add_transaction(
 			Transaction(

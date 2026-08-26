@@ -49,7 +49,7 @@ Phase 6 – Testing
 		[x] Account log serialization
 	[ ] Transaction methods
 	[ ] BudgetPlanner methods
-		[x] Fund transfers
+		[x] Fund transfers, including insufficient-funds validation
 	[ ] StorageManager methods
 [ ] Implement CLI I/O mocking for automated testing
 [ ] Ensure 100% coverage of core logic
