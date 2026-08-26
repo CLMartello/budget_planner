@@ -63,4 +63,30 @@ def test_cannot_merge_account_with_itself(tmp_path):
 	with pytest.raises(ValueError, match="different"):
 		planner.merge_accounts("Personal", "Personal")
 
-	
+def test_merge_accounts(tmp_path):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+
+	planner.create_account("Checking")
+	planner.create_account("Savings")
+
+	planner.add_transaction	(
+		"Checking",
+		100,
+		"Salary",
+		"Checking income"
+	)
+
+	planner.add_transaction(
+		"Savings",
+		50,
+		"Deposit",
+		"Savings deposit"
+	)
+
+	planner.merge_accounts("Checking", "Savings")
+
+	assert "Checking" not in planner.accounts
+	assert "Savings" in planner.accounts
+	assert planner.accounts["Savings"].get_balance() == 150
+	assert len(planner.accounts["Savings"].transactions) == 2
