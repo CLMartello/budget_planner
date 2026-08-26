@@ -56,6 +56,9 @@ class	BudgetPlanner:
 		if source not in self.accounts or target not in self.accounts:
 			raise ValueError("One or both accounts do not exist.")
 
+		if source == target:
+			raise ValueError("Source and target accounts must be different.")
+
 		if amount <= 0:
 			raise ValueError("Amount must be positive.")
 

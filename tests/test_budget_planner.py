@@ -90,3 +90,21 @@ def test_merge_accounts(tmp_path):
 	assert "Savings" in planner.accounts
 	assert planner.accounts["Savings"].get_balance() == 150
 	assert len(planner.accounts["Savings"].transactions) == 2
+
+def test_cannot_transfer_to_same_account(tmp_path):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+	
+	planner.create_account("Checking")
+	planner.add_transaction(
+		"Checking",
+		100,
+		"Income",
+		"Initial deposit"
+	)
+
+	with pytest.raises(ValueError, match="different"):
+		planner.transfer_funds("Checking", "Checking", 30)
+
+	assert planner.accounts["Checking"].get_balance() == 100
+	assert len(planner.accounts["Checking"].transactions) == 1
