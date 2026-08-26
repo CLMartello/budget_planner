@@ -1,6 +1,7 @@
 
 from planner import BudgetPlanner
 import pytest
+from datetime import datetime
 
 def test_create_account(tmp_path):
 	test_file = tmp_path / "test.json"
@@ -108,3 +109,40 @@ def test_cannot_transfer_to_same_account(tmp_path):
 
 	assert planner.accounts["Checking"].get_balance() == 100
 	assert len(planner.accounts["Checking"].transactions) == 1
+
+def test_complete_save_and_load(tmp_path):
+	test_file = tmp_path / "test.json"
+	transaction_date = datetime(2026, 8, 26, 12, 0)
+
+	planner = BudgetPlanner(storage_path=test_file)
+	planner.create_account("Personal")
+
+	planner.add_transaction(
+		"Personal",
+		100,
+		"Salary",
+		"Initial income",
+		transaction_date
+	)
+
+	planner.edit_last_transaction(
+		"Personal",
+		150,
+		"Bonus",
+		"Updated income"
+	)
+
+	planner.save()
+
+	restored_planner = BudgetPlanner(storage_path=test_file)
+	restored_account = restored_planner.accounts["Personal"]
+	restored_transaction = restored_account.transactions[0]
+
+	assert restored_account.name == "Personal"
+	assert restored_account.get_balance() == 150
+	assert len(restored_account.transactions) == 1
+	assert restored_transaction.amount == 150
+	assert restored_transaction.category == "Bonus"
+	assert restored_transaction.description == "Updated income"
+	assert restored_transaction.date == transaction_date
+	assert restored_account.logs == planner.accounts["Personal"].logs

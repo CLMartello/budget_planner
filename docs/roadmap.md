@@ -21,7 +21,7 @@ Phase 3 – CLI Interface
 [x] Create main CLI menu
 [x] Implement account management in CLI:
 	[x] Create account
-	[ ] Remove account
+	[x] Remove account
 	[x] Merge accounts
 	[x] List all accounts
 [x] Implement transaction management in CLI:
@@ -39,7 +39,7 @@ Phase 4 – Analytics & Reporting
 [ ] Optional: Visual charts with matplotlib or similar
 
 Phase 5 – Persistence & Data Handling
-[ ] Load and save all accounts and transactions to JSON
+[x] Load and save all accounts and transactions to JSON
 [ ] Implement error handling for file I/O
 [ ] Optional: CSV import/export for accounts and transactions
 
