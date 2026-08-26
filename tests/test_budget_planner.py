@@ -53,3 +53,13 @@ def test_transfer_insufficient_funds(tmp_path):
 
 	with pytest.raises(ValueError, match="Insufficient funds"):
 		planner.transfer_funds("Checking", "Savings", 200)
+
+def test_cannot_merge_account_with_itself(tmp_path):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+	planner.create_account("Personal")
+
+	with pytest.raises(ValueError, match="different"):
+		planner.merge_accounts("Personal", "Personal")
+
+	

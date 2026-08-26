@@ -25,6 +25,9 @@ class	BudgetPlanner:
 	def merge_accounts(self, source: str, target: str):
 		if source not in self.accounts or target not in self.accounts:
 			raise ValueError("One or both accounts do not exist.")
+		
+		if source == target:
+			raise ValueError("Source and target accoounts must be different.")
 
 		source_acc = self.accounts[source]
 		target_acc = self.accounts[target]
