@@ -96,7 +96,7 @@ budget_planner/
 ## Installation
 
 ```bash
-git clone https://github.com/yourusername/budget-planner
+git clone git@github.com:CLMartello/budget_planner.git
 cd budget-planner
 python src/cli.py
 ```
