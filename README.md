@@ -1,128 +1,160 @@
 # Budget Planner
-A personal finance management system designed to organize accounts, track transactions, visualize spending, and analyze financial habits — built using Python and Object-Oriented Programming (OOP).
 
-## Features
-1. Create, remove, and merge financial accounts
-2. Add, edit, and classify transactions (income/expense)
-3. Transfer funds between accounts
-4. View account history and balances
-5. Breakdown of expenses by category
-6. Semester balance reports
-7. Global overview of all accounts
-8. Persistent storage using files
-9. Clean OOP architecture for easy expansion
+A command-line personal finance application built with Python and object-oriented programming.
+
+The project manages financial accounts, transactions, transfers, and JSON persistence. It is also a learning project focused on developing Python and OOP skills through small, tested changes.
+
+## Current Features
+
+- Create and remove financial accounts
+- Merge two different accounts
+- Add and edit transactions
+- Calculate account balances
+- Transfer funds between accounts
+- Calculate total income and expenses
+- Filter expenses by category
+- Record transaction edit logs
+- Save and load account data using JSON
+- Use an interactive command-line interface
+- Verify core behavior with pytest
 
 ## OOP Architecture
-UML Class Diagram (Mermaid)
+
+The project separates responsibilities across four main classes:
+
+- `Transaction` represents one financial transaction.
+- `Account` manages transactions, balances, and edit logs.
+- `BudgetPlanner` coordinates accounts and financial operations.
+- `StorageManager` handles JSON persistence.
 
 ```mermaid
 classDiagram
-    direction TB
-
     class BudgetPlanner {
-        +Dict~str, Account~ accounts
-        +create_account(name: str)
-        +remove_account(name: str)
-        +merge_accounts(source: str, target: str)
-        +transfer_funds(from_acc: str, to_acc: str, amount: float, description: str)
-        +list_accounts() List~str~
-        +get_overview() Dict
+        +dict accounts
+        +create_account(name)
+        +get_account(name)
+        +remove_account(name)
+        +merge_accounts(source, target)
+        +add_transaction(account_name, amount, category, description, date)
+        +edit_last_transaction(account_name, amount, category, description)
+        +transfer_funds(source, target, amount)
+        +get_income_and_expenses()
+        +get_expenses_by_category(category)
         +load()
         +save()
     }
 
     class Account {
         +str name
-        +List~Transaction~ transactions
-        +add_transaction(transaction: Transaction)
-        +edit_last_transaction(new_data: Dict)
-        +get_balance() float
-        +get_incomes() List~Transaction~
-        +get_expenses() List~Transaction~
-        +get_history() List~str~
-        +get_semester_balance(year: int, semester: int) float
-        +get_expense_breakdown() Dict~str, float~
+        +list transactions
+        +list logs
+        +add_transaction(transaction)
+        +get_balance()
+        +history()
+        +edit_last_transaction(amount, category, description)
+        +to_dict()
+        +from_dict(data)
     }
 
     class Transaction {
         +float amount
-        +str type
         +str category
-        +datetime date
         +str description
+        +datetime date
+        +to_dict()
+        +from_dict(data)
     }
 
     class StorageManager {
-        +str file_path
-        +load() Dict
-        +save(data: Dict)
+        +Path filepath
+        +load()
+        +save(data)
     }
 
     BudgetPlanner "1" o-- "*" Account : manages
     Account "1" o-- "*" Transaction : contains
-    BudgetPlanner "1" --> "1" StorageManager : uses
+    BudgetPlanner --> StorageManager : uses
 ```
 
-## Folder Structure
+## Project Structure
 
-```pgsql
+```text
 budget_planner/
-│
 ├── src/
 │   ├── cli.py
-|   ├── planner.py
+│   ├── planner.py
 │   ├── models/
-|   |   ├── account.py
-|   |   └── transaction.py  
+│   │   ├── account.py
+│   │   └── transaction.py
 │   └── services/
 │       └── storage_manager.py
-│
 ├── data/
-│   └── storage.json
-│
+│   └── accounts.json          # Created when application data is saved
 ├── docs/
-│   ├── uml_class_diagram.md
-|   └── roadmap.md
-│
+│   └── roadmap.md
 ├── tests/
 │   ├── test_account.py
-│   ├── test_transactions.py
-│   ├── test_planner.py
-│   └── test_storage.py
-│
+│   ├── test_budget_planner.py
+│   └── test_transaction.py
+├── pytest.ini
 └── README.md
 ```
 
+## Requirements
+
+- Python 3.10 or newer
+- pytest, for running the tests
+
+The application itself uses only Python’s standard library.
+
 ## Installation
 
+Clone the repository:
+
 ```bash
-git clone git@github.com:CLMartello/budget_planner.git
-cd budget-planner
-python src/cli.py
+git clone https://github.com/CLMartello/budget_planner.git
+cd budget_planner
+```
+
+Create and activate a virtual environment:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+Install pytest:
+
+```bash
+python -m pip install pytest
 ```
 
 ## Usage
-The system works through a simple menu-based interface:
-1. Create accounts
-2. Add transactions
-3. View reports
-4. Transfer funds
-5. Remove/merge accounts
-6. Save and load automatically
 
-More interfaces (GUI, Web, REST API) can be added later thanks to the OOP structure.
+Start the command-line application:
 
-## Roadmap
-```markdown
-## Roadmap
-[x] Phase 1 – Core Classes & OOP Design
-[ ] Phase 2 – CLI Interface
-[ ] Phase 3 – Reporting & Analytics
-[ ] Phase 4 – Persistence & Testing
-[ ] Phase 5 – Optional Features
+```bash
+python src/cli.py
 ```
 
-## License
-MIT License.
+The interactive menu provides account management, transaction management, transfers, summaries, and persistent storage.
 
-You are free to use, modify, and distribute this project.
+## Tests
+
+Run the complete test suite from the project root:
+
+```bash
+python -m pytest -q
+```
+
+Run one test file:
+
+```bash
+python -m pytest -q tests/test_transaction.py
+```
+
+## Roadmap
+
+See [docs/roadmap.md](docs/roadmap.md) for completed work and planned features.
+
+Possible future improvements include more financial reports, stronger input validation, CSV import/export, and a graphical or web interface.
