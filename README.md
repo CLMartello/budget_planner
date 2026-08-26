@@ -98,7 +98,7 @@ budget_planner/
 ```bash
 git clone https://github.com/yourusername/budget-planner
 cd budget-planner
-python3 main.py
+python src/cli.py
 ```
 
 ## Usage
