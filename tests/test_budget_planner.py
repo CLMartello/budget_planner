@@ -37,6 +37,7 @@ def test_transfer_funds(tmp_path):
 
 	assert planner.accounts["Checking"].get_balance() == 70
 	assert planner.accounts["Savings"].get_balance() == 30
+	assert planner.accounts["Savings"].transactions[-1].description == "Transfer from Checking"
 
 def test_transfer_insufficient_funds(tmp_path):
 	test_file = tmp_path / "test.json"

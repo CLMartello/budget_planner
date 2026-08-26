@@ -76,7 +76,7 @@ class	BudgetPlanner:
 			Transaction(
 				amount,
 				"transfer",
-				f"Transfer to {source}"
+				f"Transfer from {source}"
 			)
 		)
 
