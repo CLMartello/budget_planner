@@ -23,6 +23,12 @@ def get_date():
 		return datetime.today().date()
 	return datetime.strptime(date_str, "%Y-%m-%d").date()
 
+def get_amount(prompt):
+	try:
+		return float(input(prompt))
+	except ValueError:
+		raise ValueError("Amount must be a number.")
+
 def main():
 	planner = BudgetPlanner()
 
@@ -59,7 +65,7 @@ def main():
 			# ADD TRANSACTION
 			elif option == "5":
 				account = input("Account name: ")
-				amount = float(input("Amount: "))
+				amount = get_amount("Amount: ")
 				category = input("Category: ")
 				description = input("Description: ")
 				date = get_date()
@@ -72,7 +78,7 @@ def main():
 			# EDIT LAST TRANSACTION
 			elif option == "6":
 				account = input("Account name: ")
-				amount = float(input("New amount: "))
+				amount = get_amount("New amount: ")
 				category = input("New category: ")
 				description = input("New description: ")
 
@@ -85,7 +91,7 @@ def main():
 			elif option == "7":
 				source = input("From account: ")
 				target = input("To account: ")
-				amount = float(input("Amount: "))
+				amount = get_amount("Amount: ")
 
 				planner.transfer_funds(source, target, amount)
 				print("Transfer completed.")
@@ -93,7 +99,10 @@ def main():
 			# ACCOUNT HISTORY AND BALANCE
 			elif option == "8":
 				account = input("Account name: ")
-				acc = planner.accounts[account]
+				acc = planner.get_account(account)
+
+				if acc is None:
+					raise ValueError("Account does not exist.")
 
 				print("\nTransactions:")
 				for t in acc.transactions:
@@ -124,7 +133,7 @@ def main():
 			else:
 				print("Invalid option.")
 
-		except Exception as e:
+		except ValueError as e:
 			print(f"Error: {e}")
 
 if __name__ == "__main__":

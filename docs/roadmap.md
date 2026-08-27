@@ -52,7 +52,7 @@ Phase 6 – Testing
 		[x] Fund transfers
 		[x] Account merge validation
 	[ ] StorageManager methods
-[ ] Implement CLI I/O mocking for automated testing
+[x] Implement CLI I/O mocking for automated testing
 [ ] Ensure 100% coverage of core logic
 
 Phase 7 – Documentation
