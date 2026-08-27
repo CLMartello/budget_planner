@@ -7,9 +7,19 @@ class StorageManager:
 		self.filepath = Path(filepath)
 
 	def save(self, data: dict):
-		self.filepath.parent.mkdir(parents=True, exist_ok=True)
-		with open(self.filepath, "w") as f:
-			json.dump(data, f, indent=4)
+		try:
+			self.filepath.parent.mkdir(
+				parents=True,
+				exist_ok=True
+			)
+		
+			with open(self.filepath, "w") as f:
+				json.dump(data, f, indent=4)
+
+		except OSError as error:
+			raise OSError(
+				f"Unable to write storage file: {self.filepath}"
+			) from error
 
 	def load(self) -> dict:
 		if not self.filepath.exists():
@@ -21,6 +31,10 @@ class StorageManager:
 		except json.JSONDecodeError as error:
 			raise ValueError(
 				"Storage file contains invalid JSON."
+			) from error
+		except OSError as error:
+			raise OSError(
+				f"Unable to read storage file: {self.filepath}"
 			) from error
 
 		if not isinstance(data, dict):

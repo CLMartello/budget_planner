@@ -48,3 +48,40 @@ def test_load_missing_file_returns_empty_dictionary(tmp_path):
 	storage = StorageManager(test_file)
 
 	assert storage.load() == {}
+
+def test_load_handles_os_error(tmp_path, monkeypatch):
+	test_file = tmp_path / "accounts.json"
+	test_file.write_text("{}")
+	storage = StorageManager(test_file)
+
+	def raise_os_error(*args, **kwargs):
+		raise OSError("Permission denied")
+
+	monkeypatch.setattr(
+		"builtins.open",
+		raise_os_error
+	)
+
+	with pytest.raises(
+		OSError,
+		match="Unable to read storage file"
+	):
+		storage.load()
+
+def test_save_handles_os_error(tmp_path, monkeypatch):
+	test_file = tmp_path / "accounts.json"
+	storage = StorageManager(test_file)
+
+	def raise_os_error(*args, **kwargs):
+		raise OSError("Permission denied")
+
+	monkeypatch.setattr(
+		"builtins.open",
+		raise_os_error
+	)
+
+	with pytest.raises(
+		OSError,
+		match="Unable to write storage file"
+	):
+		storage.save({})

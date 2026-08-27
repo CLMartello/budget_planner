@@ -41,7 +41,7 @@
 
 ## Phase 5 – Persistence & Data Handling
 - [x] Load and save all accounts and transactions to JSON
-- [ ] Implement error handling for file I/O
+- [x] Implement error handling for file I/O
 - [ ] Optional: CSV import/export for accounts and transactions
 
 ## Phase 6 – Testing
