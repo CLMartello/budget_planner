@@ -46,7 +46,7 @@
 
 ## Phase 6 – Testing
 - [ ] Write unit tests for:
-	- [ ] Account methods
+	- [x] Account methods
 		- [x] Account log serialization
 	- [x] Transaction methods
 	- [ ] BudgetPlanner methods

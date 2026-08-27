@@ -116,3 +116,28 @@ def test_invalid_semester():
 		match="Semester must be 1 or 2"
 	):
 		account.get_semester_balance(2026, 3)
+
+def test_account_history():
+	account = Account("Personal")
+	first = Transaction(100, "Salary")
+	second = Transaction(-30, "Food")
+
+	account.add_transaction(first)
+	account.add_transaction(second)
+
+	history = account.history()
+
+	assert history == [first, second]
+
+def test_edit_last_transaction_requires_transaction():
+	account = Account("Personal")
+
+	with pytest.raises(
+		ValueError,
+		match="No transactions to edit"
+	):
+		account.edit_last_transaction(
+			100,
+			"Salary",
+			"Updated salary"
+		)
