@@ -16,6 +16,7 @@ def print_menu():
 	print("9. List incomes and expenses")
 	print("10. Discriminate expenses")
 	print("11. Show semester balance")
+	print("12. Show expense breakdown")
 	print("0. Exit")
 
 def get_date():
@@ -146,6 +147,18 @@ def main():
 				)
 
 				print(f"Semester balance: {balance:.2f}")
+
+			# SHOW EXPENSE BREAKDOWN
+			elif option == "12":
+				breakdown = planner.get_expense_breakdown()
+
+				if not breakdown:
+					print("No expenses recorded.")
+				else:
+					print("\nExpense breakdown:")
+
+				for category, total in sorted(breakdown.items()):
+					print(f"{category}: {total:.2f}")				
 
 			# EXIT
 			elif option == "0":

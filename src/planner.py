@@ -106,6 +106,19 @@ class	BudgetPlanner:
 
 		return expenses
 
+	def get_expense_breakdown(self) -> dict[str, float]:
+		breakdown = {}
+
+		for account in self.accounts.values():
+			for transaction in account.transactions:
+				if transaction.amount < 0:
+					breakdown[transaction.category] = (
+						breakdown.get(transaction.category, 0)
+						+ abs(transaction.amount)
+					)
+		
+		return breakdown
+
 	def get_semester_balance(
 		self,
 		account_name: str,

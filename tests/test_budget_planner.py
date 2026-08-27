@@ -174,3 +174,42 @@ def test_get_semester_balance(tmp_path):
 	)
 
 	assert balance == 800
+
+def test_expense_breakdown_by_category(tmp_path):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+
+	planner.create_account("Personal")
+	planner.create_account("Savings")
+
+	planner.add_transaction(
+		"Personal",
+		-50,
+		"Food",
+		"Groceries"
+	)
+	planner.add_transaction(
+		"Personal",
+		-20,
+		"Transport",
+		"Bus pass"
+	)
+	planner.add_transaction(
+		"Savings",
+		-30,
+		"Food",
+		"Restaurant"
+	)
+	planner.add_transaction(
+		"Savings",
+		1000,
+		"Salary",
+		"Monthly salary"
+	)
+
+	breakdown = planner.get_expense_breakdown()
+
+	assert breakdown == {
+		"Food": 80,
+		"Transport": 20
+	}

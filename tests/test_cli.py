@@ -174,3 +174,63 @@ def test_invalid_semester_number(
 
 	assert "Error: Semester must be a number." in output
 	assert "Goodbye." in output
+
+def test_show_expense_breakdown(
+	tmp_path,
+	monkeypatch,
+	capsys
+    ):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+
+	planner.create_account("Personal")
+	planner.add_transaction(
+		"Personal",
+		-50,
+		"Food",
+		"Groceries"
+	)
+	planner.add_transaction(
+		"Personal",
+		-20,
+		"Transport",
+		"Bus pass"
+	)
+
+	inputs = iter(["12", "0"])
+
+	monkeypatch.setattr("cli.BudgetPlanner", lambda: planner)
+	monkeypatch.setattr(
+		"builtins.input",
+		lambda prompt: next(inputs)
+	)
+
+	main()
+
+	output = capsys.readouterr().out
+
+	assert "Food: 50.00" in output
+	assert "Transport: 20.00" in output
+	assert "Goodbye." in output
+
+def test_show_empty_expense_breakdown(
+	tmp_path,
+	monkeypatch,
+	capsys
+):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+	inputs = iter(["12", "0"])
+
+	monkeypatch.setattr("cli.BudgetPlanner", lambda: planner)
+	monkeypatch.setattr(
+		"builtins.input",
+		lambda prompt: next(inputs)
+	)
+
+	main()
+
+	output = capsys.readouterr().out
+
+	assert "No expenses recorded." in output
+	assert "Goodbye." in output

@@ -36,7 +36,7 @@
 ## Phase 4 – Analytics & Reporting
 - [x] Implement semester balance calculation
 - [x] Implement income and expense summary
-- [ ] Generate expense breakdown by category
+- [x] Generate expense breakdown by category
 - [ ] Optional: Visual charts with matplotlib or similar
 
 ## Phase 5 – Persistence & Data Handling
