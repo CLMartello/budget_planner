@@ -127,7 +127,7 @@ source .venv/bin/activate
 Install pytest:
 
 ```bash
-python -m pip install pytest
+python -m pip install -r requirements-dev.txt
 ```
 
 ## Usage
