@@ -124,3 +124,53 @@ def test_show_semester_balance(
 
 	assert "Semester balance: 800.00" in output
 	assert "Goodbye." in output
+
+def test_invalid_semester_year(
+    tmp_path,
+    monkeypatch,
+    capsys
+):
+    test_file = tmp_path / "test.json"
+    planner = BudgetPlanner(storage_path=test_file)
+    inputs = iter(["11", "Personal", "not-a-year", "0"])
+
+    monkeypatch.setattr("cli.BudgetPlanner", lambda: planner)
+    monkeypatch.setattr(
+        "builtins.input",
+        lambda prompt: next(inputs)
+    )
+
+    main()
+
+    output = capsys.readouterr().out
+    
+    assert "Error: Year must be a number." in output
+    assert "Goodbye." in output
+
+def test_invalid_semester_number(
+	tmp_path,
+	monkeypatch,
+	capsys
+):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+	inputs = iter([
+		"11",
+		"Personal",
+		"2026",
+		"not-a-semester",
+		"0"
+	])
+
+	monkeypatch.setattr("cli.BudgetPlanner", lambda: planner)
+	monkeypatch.setattr(
+		"builtins.input",
+		lambda prompt: next(inputs)
+	)
+
+	main()
+
+	output = capsys.readouterr().out
+
+	assert "Error: Semester must be a number." in output
+	assert "Goodbye." in output

@@ -30,6 +30,12 @@ def get_amount(prompt):
 	except ValueError:
 		raise ValueError("Amount must be a number.")
 
+def get_integer(prompt, error_message):
+	try:
+		return int(input(prompt))
+	except ValueError:
+		raise ValueError(error_message)
+
 def main():
 	planner = BudgetPlanner()
 
@@ -128,8 +134,10 @@ def main():
 			# SHOW SEMESTER BALANCE
 			elif option == "11":
 				account = input("Account name: ")
-				year = int(input("Year: "))
-				semester = int(input("Semester (1 or 2): "))
+				year = get_integer("Year: ", "Year must be a number.")
+				semester = get_integer(
+					"Semester (1 or 2): ",
+					"Semester must be a number.")
 
 				balance = planner.get_semester_balance(
 					account,
