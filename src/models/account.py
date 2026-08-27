@@ -14,6 +14,20 @@ class Account:
 	def get_balance(self):
 		return sum(t.amount for t in self.transactions)
 
+	def get_semester_balance(self, year: int, semester: int):
+		if semester not in (1, 2):
+			raise ValueError("Semester must be 1 or 2.")
+
+		start_month = 1 if semester == 1 else 7
+		end_month = 6 if semester == 1 else 12
+
+		return sum(
+			transaction.amount
+			for transaction in self.transactions
+			if transaction.date.year == year
+			and start_month <= transaction.date.month <= end_month
+		)
+
 	def history(self):
 		return self.transactions
 

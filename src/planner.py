@@ -106,6 +106,20 @@ class	BudgetPlanner:
 
 		return expenses
 
+	def get_semester_balance(
+		self,
+		account_name: str,
+		year: int,
+		semester: int
+	) -> float:
+		account = self.get_account(account_name)
+
+		if account is None:
+			raise ValueError("Account does not exist.")
+
+		return account.get_semester_balance(year, semester)
+	
+
 	def load(self):
 		raw_data = self.storage.load()
 		from models.account import Account

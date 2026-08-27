@@ -15,6 +15,7 @@ def print_menu():
 	print("8. Show account history and balance")
 	print("9. List incomes and expenses")
 	print("10. Discriminate expenses")
+	print("11. Show semester balance")
 	print("0. Exit")
 
 def get_date():
@@ -123,6 +124,20 @@ def main():
 
 				for t in expenses:
 					print(t)
+
+			# SHOW SEMESTER BALANCE
+			elif option == "11":
+				account = input("Account name: ")
+				year = int(input("Year: "))
+				semester = int(input("Semester (1 or 2): "))
+
+				balance = planner.get_semester_balance(
+					account,
+					year,
+					semester
+				)
+
+				print(f"Semester balance: {balance:.2f}")
 
 			# EXIT
 			elif option == "0":

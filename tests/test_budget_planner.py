@@ -146,3 +146,31 @@ def test_complete_save_and_load(tmp_path):
 	assert restored_transaction.description == "Updated income"
 	assert restored_transaction.date == transaction_date
 	assert restored_account.logs == planner.accounts["Personal"].logs
+
+def test_get_semester_balance(tmp_path):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+
+	planner.create_account("Personal")
+	planner.add_transaction(
+		"Personal",
+		1000,
+		"Salary",
+		"January salary",
+		datetime(2026, 1, 15)
+	)
+	planner.add_transaction(
+		"Personal",
+		-200,
+		"Food",
+		"March groceries",
+		datetime(2026, 3, 10)
+	)
+
+	balance = planner.get_semester_balance(
+		"Personal",
+		2026,
+		1
+	)
+
+	assert balance == 800

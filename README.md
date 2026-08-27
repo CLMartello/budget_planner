@@ -40,6 +40,7 @@ classDiagram
         +transfer_funds(source, target, amount)
         +get_income_and_expenses()
         +get_expenses_by_category(category)
+        +get_semester_balance(account_name, year, semester)
         +load()
         +save()
     }
@@ -50,6 +51,7 @@ classDiagram
         +list logs
         +add_transaction(transaction)
         +get_balance()
+        +get_semester_balance(year, semester)
         +history()
         +edit_last_transaction(amount, category, description)
         +to_dict()

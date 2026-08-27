@@ -34,7 +34,7 @@
 - [x] Display account history and balance
 
 ## Phase 4 – Analytics & Reporting
-- [ ] Implement semester balance calculation
+- [x] Implement semester balance calculation
 - [x] Implement income and expense summary
 - [ ] Generate expense breakdown by category
 - [ ] Optional: Visual charts with matplotlib or similar
