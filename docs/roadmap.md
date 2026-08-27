@@ -45,13 +45,10 @@
 - [ ] Optional: CSV import/export for accounts and transactions
 
 ## Phase 6 – Testing
-- [ ] Write unit tests for:
+- [x] Write unit tests for:
 	- [x] Account methods
-		- [x] Account log serialization
 	- [x] Transaction methods
-	- [ ] BudgetPlanner methods
-		- [x] Fund transfers
-		- [x] Account merge validation
+	- [x] BudgetPlanner methods
 	- [x] StorageManager methods
 - [x] Implement CLI I/O mocking for automated testing
 - [ ] Ensure 100% coverage of core logic

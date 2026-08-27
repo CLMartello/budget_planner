@@ -141,3 +141,4 @@ def test_edit_last_transaction_requires_transaction():
 			"Salary",
 			"Updated salary"
 		)
+

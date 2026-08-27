@@ -287,3 +287,148 @@ def test_get_expenses_by_category(tmp_path):
 
 	assert len(expenses) == 2
 	assert [expense.amount for expense in expenses] == [-50, -30]
+
+def test_create_duplicate_account(tmp_path):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+
+	planner.create_account("Personal")
+
+	with pytest.raises(
+		ValueError,
+		match="Account already exists"
+	):
+		planner.create_account("Personal")
+
+def test_remove_account(tmp_path):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+
+	planner.create_account("Personal")
+	planner.remove_account("Personal")
+
+	assert "Personal" not in planner.accounts
+
+def test_remove_missing_account(tmp_path):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+
+	with pytest.raises(
+		ValueError,
+		match="Account does not exist"
+	):
+		planner.remove_account("Missing")
+
+def test_add_transaction_to_missing_account(tmp_path):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+
+	with pytest.raises(
+		ValueError,
+		match="Account does not exist"
+	):
+		planner.add_transaction(
+			"Missing",
+			100,
+			"Salary",
+			"Monthly salary"
+		)
+
+def test_edit_transaction_in_missing_account(tmp_path):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+
+	with pytest.raises(
+		ValueError,
+		match="Account does not exist"
+	):
+		planner.edit_last_transaction(
+			"Missing",
+			100,
+			"Salary",
+			"Updated salary"
+		)
+
+@pytest.mark.parametrize("amount", [0, -10])
+def test_transfer_requires_positive_amount(
+	tmp_path,
+	amount
+):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+
+	planner.create_account("Checking")
+	planner.create_account("Savings")
+
+	with pytest.raises(
+		ValueError,
+		match="Amount must be positive"
+	):
+		planner.transfer_funds(
+			"Checking",
+			"Savings",
+			amount
+		)
+
+	assert planner.accounts["Checking"].transactions == []
+	assert planner.accounts["Savings"].transactions == []
+
+@pytest.mark.parametrize(
+	"source,target",
+	[
+		("Missing", "Savings"),
+		("Checking", "Missing")
+	]
+)
+def test_transfer_requires_existing_accounts(
+	tmp_path,
+	source,
+	target
+):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+
+	planner.create_account("Checking")
+	planner.create_account("Savings")
+
+	with pytest.raises(
+		ValueError,
+		match="One or both accounts do not exist"
+	):
+		planner.transfer_funds(source, target, 50)
+
+@pytest.mark.parametrize(
+	"source,target",
+	[
+		("Missing", "Savings"),
+		("Checking", "Missing")
+	]
+)
+def test_merge_requires_existing_accounts(
+	tmp_path,
+	source,
+	target
+):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+
+	planner.create_account("Checking")
+	planner.create_account("Savings")
+
+	with pytest.raises(
+		ValueError,
+		match="One or both accounts do not exist"
+	):
+		planner.merge_accounts(source, target)
+
+def test_get_account(tmp_path):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+
+	planner.create_account("Personal")
+
+	account = planner.get_account("Personal")
+	missing = planner.get_account("Missing")
+
+	assert account is planner.accounts["Personal"]
+	assert missing is None
