@@ -213,3 +213,77 @@ def test_expense_breakdown_by_category(tmp_path):
 		"Food": 80,
 		"Transport": 20
 	}
+
+def test_get_income_and_expenses(tmp_path):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+
+	planner.create_account("Personal")
+	planner.create_account("Savings")
+
+	planner.add_transaction(
+		"Personal",
+		1000,
+		"Salary",
+		"Monthly salary"
+	)
+	planner.add_transaction(
+		"Personal",
+		-200,
+		"Food",
+		"Groceries"
+	)
+	planner.add_transaction(
+		"Savings",
+		500,
+		"Bonus",
+		"Annual bonus"
+	)
+	planner.add_transaction(
+		"Savings",
+		-100,
+		"Transport",
+		"Train tickets"
+	)
+
+	income, expenses = planner.get_income_and_expenses()
+
+	assert income == 1500
+	assert expenses == 300
+
+def test_get_expenses_by_category(tmp_path):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+
+	planner.create_account("Personal")
+	planner.create_account("Savings")
+
+	planner.add_transaction(
+		"Personal",
+		-50,
+		"Food",
+		"Groceries"
+	)
+	planner.add_transaction(
+		"Savings",
+		-30,
+		"Food",
+		"Restaurant"
+	)
+	planner.add_transaction(
+		"Personal",
+		-20,
+		"Transport",
+		"Bus pass"
+	)
+	planner.add_transaction(
+		"Savings",
+		100,
+		"Food",
+		"Food refund"
+	)
+
+	expenses = planner.get_expenses_by_category("Food")
+
+	assert len(expenses) == 2
+	assert [expense.amount for expense in expenses] == [-50, -30]
