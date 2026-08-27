@@ -1,6 +1,6 @@
 # Budget Planner Roadmap
 
-Phase 1 – Project Setup (Core Foundation)
+## Phase 1 – Project Setup (Core Foundation)
 
 - [x] Create GitHub repository
 - [x] Define project structure (src/, data/, tests/, docs/)
@@ -10,7 +10,7 @@ Phase 1 – Project Setup (Core Foundation)
 - [x] Add development dependency manifest
 - [x] Plan OOP architecture (UML class diagram)
 
-Phase 2 – Core OOP Implementation
+## Phase 2 – Core OOP Implementation
 - [x] Create Transaction class
 - [x] Create Account class
 - [x] Create StorageManager class for file persistence
@@ -18,7 +18,7 @@ Phase 2 – Core OOP Implementation
 - [x] Implement serialization (to_dict / from_dict)
 - [x] Write initial unit tests for core classes
 
-Phase 3 – CLI Interface
+## Phase 3 – CLI Interface
 - [x] Create main CLI menu
 - [x] Implement account management in CLI:
 	- [x] Create account
@@ -33,22 +33,22 @@ Phase 3 – CLI Interface
 - [x] Implement fund transfer between accounts
 - [x] Display account history and balance
 
-Phase 4 – Analytics & Reporting
+## Phase 4 – Analytics & Reporting
 - [ ] Implement semester balance calculation
 - [x] Implement income and expense summary
 - [ ] Generate expense breakdown by category
 - [ ] Optional: Visual charts with matplotlib or similar
 
-Phase 5 – Persistence & Data Handling
+## Phase 5 – Persistence & Data Handling
 - [x] Load and save all accounts and transactions to JSON
 - [ ] Implement error handling for file I/O
 - [ ] Optional: CSV import/export for accounts and transactions
 
-Phase 6 – Testing
+## Phase 6 – Testing
 - [ ] Write unit tests for:
 	- [ ] Account methods
 		- [x] Account log serialization
-	- [ ] Transaction methods
+	- [x] Transaction methods
 	- [ ] BudgetPlanner methods
 		- [x] Fund transfers
 		- [x] Account merge validation
@@ -56,13 +56,13 @@ Phase 6 – Testing
 - [x] Implement CLI I/O mocking for automated testing
 - [ ] Ensure 100% coverage of core logic
 
-Phase 7 – Documentation
+## Phase 7 – Documentation
 - [x] Complete README (description, setup, usage, roadmap)
 - [x] Add UML class diagram and OOP explanation
 - [ ] Add usage examples
 - [ ] Optional: CONTRIBUTING.md and Code of Conduct
 
-Phase 8 – Optional / Advanced Features
+## Phase 8 – Optional / Advanced Features
 - [ ] Predictive expense suggestions using ML
 - [ ] Web or GUI interface (Flask, Tkinter, or PyQt)
 - [ ] Multi-user support
