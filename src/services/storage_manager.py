@@ -14,6 +14,18 @@ class StorageManager:
 	def load(self) -> dict:
 		if not self.filepath.exists():
 			return {}
-		with open(self.filepath) as f:
-			return json.load(f)
 
+		try:
+			with open(self.filepath) as f:
+				data = json.load(f)
+		except json.JSONDecodeError as error:
+			raise ValueError(
+				"Storage file contains invalid JSON."
+			) from error
+
+		if not isinstance(data, dict):
+			raise ValueError(
+				"Storage file must contain a JSON object."
+			)
+
+		return data

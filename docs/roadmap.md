@@ -52,7 +52,7 @@
 	- [ ] BudgetPlanner methods
 		- [x] Fund transfers
 		- [x] Account merge validation
-	- [ ] StorageManager methods
+	- [x] StorageManager methods
 - [x] Implement CLI I/O mocking for automated testing
 - [ ] Ensure 100% coverage of core logic
 
