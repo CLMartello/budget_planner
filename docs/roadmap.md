@@ -52,6 +52,7 @@
 	- [x] StorageManager methods
 - [x] Implement CLI I/O mocking for automated testing
 - [x] Ensure 100% coverage of core logic
+- [x] Add GitHub Actions CI for compilation, tests, and coverage
 
 ## Phase 7 – Documentation
 - [x] Complete README (description, setup, usage, roadmap)
