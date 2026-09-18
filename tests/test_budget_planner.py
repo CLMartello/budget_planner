@@ -432,3 +432,17 @@ def test_get_account(tmp_path):
 
 	assert account is planner.accounts["Personal"]
 	assert missing is None
+
+def test_semester_balance_requires_existing_account(tmp_path):
+	test_file = tmp_path / "test.json"
+	planner = BudgetPlanner(storage_path=test_file)
+
+	with pytest.raises(
+		ValueError,
+		match="Account does not exist"
+	):
+		planner.get_semester_balance(
+			"Missing",
+			2026,
+			1
+		)

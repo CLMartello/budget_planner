@@ -51,7 +51,7 @@
 	- [x] BudgetPlanner methods
 	- [x] StorageManager methods
 - [x] Implement CLI I/O mocking for automated testing
-- [ ] Ensure 100% coverage of core logic
+- [x] Ensure 100% coverage of core logic
 
 ## Phase 7 – Documentation
 - [x] Complete README (description, setup, usage, roadmap)

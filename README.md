@@ -157,6 +157,12 @@ Run one test file:
 python -m pytest -q tests/test_transaction.py
 ```
 
+Run tests with a line coverage report:
+
+```bash
+python -m pytest --cov=src --cov-report=term-missing -q
+```
+
 ## Roadmap
 
 See [docs/roadmap.md](docs/roadmap.md) for completed work and planned features.
