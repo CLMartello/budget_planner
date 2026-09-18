@@ -64,3 +64,13 @@
 - [ ] Web or GUI interface (Flask, Tkinter, or PyQt)
 - [ ] Multi-user support
 - [ ] Additional reporting (monthly, yearly, category trends)
+
+## Phase 9 – Web API
+- [ ] Add FastAPI application
+- [ ] Create account endpoints
+- [ ] Create transaction endpoints
+- [ ] Create transfer endpoints
+- [ ] Create reporting endpoints
+- [ ] Add API tests
+- [ ] Connect the web interface
+- [ ] Containerize the API
