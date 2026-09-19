@@ -67,7 +67,7 @@
 - [ ] Additional reporting (monthly, yearly, category trends)
 
 ## Phase 9 – Web API
-- [ ] Add FastAPI application
+- [x] Add FastAPI application
 - [ ] Create account endpoints
 - [ ] Create transaction endpoints
 - [ ] Create transfer endpoints

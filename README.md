@@ -1,6 +1,6 @@
 # Budget Planner
 
-A command-line personal finance application built with Python and object-oriented programming.
+A personal finance application built with Python and object-oriented programming.
 
 The project manages financial accounts, transactions, transfers, and JSON persistence. It is also a learning project focused on developing Python and OOP skills through small, tested changes.
 
@@ -83,6 +83,7 @@ classDiagram
 ```text
 budget_planner/
 ├── src/
+│   ├── api.py
 │   ├── cli.py
 │   ├── planner.py
 │   ├── models/
@@ -96,20 +97,22 @@ budget_planner/
 │   └── roadmap.md
 ├── tests/
 │   ├── test_account.py
+│   ├── test_api.py
 │   ├── test_budget_planner.py
 │   ├── test_cli.py
 │   ├── test_storage_manager.py
 │   └── test_transaction.py
 ├── pytest.ini
+├── requirements.txt
+├── requirements-dev.txt
 └── README.md
 ```
 
 ## Requirements
 
 - Python 3.10 or newer
-- pytest, for running the tests
-
-The application itself uses only Python’s standard library.
+- FastAPI, for the web API
+- pytest and pytest-cov, for running the tests
 
 ## Installation
 
@@ -127,7 +130,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-Install pytest:
+Install the runtime and development dependencies:
 
 ```bash
 python -m pip install -r requirements-dev.txt
@@ -139,6 +142,14 @@ Start the command-line application:
 
 ```bash
 python src/cli.py
+```
+
+### Web API
+
+Start the development API server:
+
+```bash
+fastapi dev src/api.py
 ```
 
 The interactive menu provides account management, transaction management, transfers, summaries, and persistent storage.
