@@ -1,9 +1,16 @@
 from fastapi import FastAPI, HTTPException
 from planner import BudgetPlanner
 from pydantic import BaseModel
+from datetime import datetime
 
 class AccountCreate(BaseModel):
     name: str
+
+class TransactionCreate(BaseModel):
+    amount: float
+    category: str
+    description: str = ""
+    date: datetime | None = None
 
 app = FastAPI(title="Budget Planner API")
 planner = BudgetPlanner()
@@ -41,3 +48,49 @@ def remove_account(name: str):
         ) from error
     
     planner.save()
+
+@app.post(
+    "/accounts/{name}/transactions",
+    status_code=201
+)
+def create_transaction(
+    name: str,
+    transaction: TransactionCreate
+):
+    try:
+        planner.add_transaction(
+            name,
+            transaction.amount,
+            transaction.category,
+            transaction.description,
+            transaction.date
+        )
+    except ValueError as error:
+        raise HTTPException(
+            status_code=404,
+            detail=str(error)
+        ) from error
+
+    planner.save()
+
+    create_transaction = (
+        planner.get_account(name).transactions[-1]
+    )
+    return create_transaction.to_dict()
+
+@app.get("/accounts/{name}/transactions")
+def list_transactions(name: str):
+    account = planner.get_account(name)
+    
+    if account is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Account does not exist."
+        )
+
+    return {
+        "transactions": [
+            transaction.to_dict()
+            for transaction in account.transactions
+        ]
+    }

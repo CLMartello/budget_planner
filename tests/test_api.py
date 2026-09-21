@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 import api
 from planner import BudgetPlanner
+from datetime import datetime
 
 client = TestClient(api.app)
 
@@ -78,6 +79,95 @@ def test_remove_missing_account_returns_not_found(
     monkeypatch.setattr(api, "planner", test_planner)
 
     response = client.delete("/accounts/Missing")
+
+    assert response.status_code == 404
+    assert response.json() == {
+        "detail": "Account does not exist."
+    }
+
+def test_create_transaction(tmp_path, monkeypatch):
+    test_file = tmp_path / "accounts.json"
+    test_planner = BudgetPlanner(storage_path=test_file)
+    test_planner.create_account("Personal")
+
+    monkeypatch.setattr(api, "planner", test_planner)
+
+    response =client.post(
+        "/accounts/Personal/transactions",
+        json={
+            "amount": 125.50,
+            "category": "Salary",
+            "description": "September income",
+            "date": "2026-09-21T10:00:00"
+        }
+    )
+
+    assert response.status_code == 201
+    assert response.json() == {
+        "amount": 125.50,
+        "category": "Salary",
+        "description": "September income",
+        "date": "2026-09-21T10:00:00"
+    }
+    assert test_planner.get_account("Personal").get_balance() == 125.50
+
+def test_create_transaction_missing_account_returns_not_found(
+    tmp_path, 
+    monkeypatch
+):
+    test_file = tmp_path / "accounts.json"
+    test_planner = BudgetPlanner(storage_path=test_file)
+
+    monkeypatch.setattr(api, "planner", test_planner)
+
+    response =client.post(
+        "/accounts/Personal/transactions",
+        json={
+            "amount": 125.50,
+            "category": "Salary",
+            "description": "September income",
+            "date": "2026-09-21T10:00:00"
+        }
+    )
+
+    assert response.status_code == 404
+    assert response.json() == {
+        "detail": "Account does not exist."
+    }
+
+def test_list_transactions(tmp_path, monkeypatch):
+    test_file = tmp_path / "accounts.json"
+    test_planner = BudgetPlanner(storage_path=test_file)
+    test_planner.create_account("Personal")
+    test_planner.add_transaction(
+        "Personal",
+        -25,
+        "Food",
+        "Lunch",
+        datetime.fromisoformat("2026-09-21T12:30:00")
+    )
+
+    monkeypatch.setattr(api, "planner", test_planner)
+
+    response = client.get("/accounts/Personal/transactions")
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "transactions": [
+            {
+                "amount": -25.0,
+                "category": "Food",
+                "description": "Lunch",
+                "date": "2026-09-21T12:30:00"
+            }
+        ]
+    }
+
+def test_list_transactions_missing_account_returns_not_found(tmp_path, monkeypatch):
+    test_file = tmp_path / "accounts.json"
+    test_planner = BudgetPlanner(storage_path=test_file)
+
+    response = client.get("/accounts/Missing/transactions")
 
     assert response.status_code == 404
     assert response.json() == {
