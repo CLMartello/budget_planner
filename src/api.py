@@ -29,3 +29,15 @@ def create_account(account: AccountCreate):
     planner.save()
 
     return{"name": account.name}
+
+@app.delete("/accounts/{name}", status_code=204)
+def remove_account(name: str):
+    try:
+        planner.remove_account(name)
+    except ValueError as error:
+        raise HTTPException(
+            status_code=404,
+            detail=str(error)
+        ) from error
+    
+    planner.save()

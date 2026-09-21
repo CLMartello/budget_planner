@@ -68,7 +68,7 @@
 
 ## Phase 9 – Web API
 - [x] Add FastAPI application
-- [ ] Create account endpoints
+- [x] Create account endpoints
 - [ ] Create transaction endpoints
 - [ ] Create transfer endpoints
 - [ ] Create reporting endpoints
