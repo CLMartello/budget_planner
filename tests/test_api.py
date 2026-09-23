@@ -259,3 +259,151 @@ def test_edit_latest_transaction_missing_account_returns_not_found(
     assert response.json() == {
         "detail": "Account does not exist."
     }
+
+def test_transfer_funds(tmp_path, monkeypatch):
+    test_file = tmp_path / "accounts.json"
+    test_planner = BudgetPlanner(storage_path=test_file)
+    test_planner.create_account("Checking")
+    test_planner.create_account("Savings")
+    test_planner.add_transaction(
+        "Checking",
+        100,
+        "Income",
+        "Initial deposit"
+    )
+
+    monkeypatch.setattr(api, "planner", test_planner)
+
+    response = client.post(
+        "/transfers",
+        json={
+            "source": "Checking",
+            "target": "Savings",
+            "amount": 30
+        }
+    )
+
+    assert response.status_code == 201
+    assert response.json() == {
+        "source": "Checking",
+        "target": "Savings",
+        "amount": 30
+    }
+    assert test_planner.get_account("Checking").get_balance() == 70
+    assert test_planner.get_account("Savings").get_balance() == 30
+
+def test_transfer_insufficient_funds_returns_bad_request(
+    tmp_path, 
+    monkeypatch
+):
+    test_file = tmp_path / "accounts.json"
+    test_planner = BudgetPlanner(storage_path=test_file)
+    test_planner.create_account("Checking")
+    test_planner.create_account("Savings")
+    test_planner.add_transaction(
+        "Checking",
+        10,
+        "Income",
+        "Initial deposit"
+    )
+
+    monkeypatch.setattr(api, "planner", test_planner)
+
+    response = client.post(
+        "/transfers",
+        json={
+            "source": "Checking",
+            "target": "Savings",
+            "amount": 30
+        }
+    )
+
+    assert response.status_code == 400
+    assert response.json() == {
+        "detail": "Insufficient funds."
+    }
+
+def test_transfer_to_same_account_returns_bad_request(
+    tmp_path, 
+    monkeypatch
+):
+    test_file = tmp_path / "accounts.json"
+    test_planner = BudgetPlanner(storage_path=test_file)
+    test_planner.create_account("Checking")
+    test_planner.add_transaction(
+        "Checking",
+        100,
+        "Income",
+        "Initial deposit"
+    )
+
+    monkeypatch.setattr(api, "planner", test_planner)
+
+    response = client.post(
+        "/transfers",
+        json={
+            "source": "Checking",
+            "target": "Checking",
+            "amount": 30
+        }
+    )
+
+    assert response.status_code == 400
+    assert response.json() == {
+        "detail": "Source and target accounts must be different."
+    }
+
+def test_transfer_non_positive_amount_returns_bad_request(
+    tmp_path, 
+    monkeypatch
+):
+    test_file = tmp_path / "accounts.json"
+    test_planner = BudgetPlanner(storage_path=test_file)
+    test_planner.create_account("Checking")
+    test_planner.create_account("Savings")
+
+    monkeypatch.setattr(api, "planner", test_planner)
+
+    response = client.post(
+        "/transfers",
+        json={
+            "source": "Checking",
+            "target": "Savings",
+            "amount": 0
+        }
+    )
+
+    assert response.status_code == 400
+    assert response.json() == {
+        "detail": "Amount must be positive."
+    }
+
+def test_transfer_missing_account_returns_bad_request(
+    tmp_path, 
+    monkeypatch
+):
+    test_file = tmp_path / "accounts.json"
+    test_planner = BudgetPlanner(storage_path=test_file)
+    test_planner.create_account("Checking")
+    test_planner.add_transaction(
+        "Checking",
+        100,
+        "Income",
+        "Initial deposit"
+    )
+
+    monkeypatch.setattr(api, "planner", test_planner)
+
+    response = client.post(
+        "/transfers",
+        json={
+            "source": "Checking",
+            "target": "Missing",
+            "amount": 30
+        }
+    )
+
+    assert response.status_code == 400
+    assert response.json() == {
+        "detail": "One or both accounts do not exist."
+    }

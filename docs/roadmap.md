@@ -70,7 +70,7 @@
 - [x] Add FastAPI application
 - [x] Create account endpoints
 - [x] Create transaction endpoints
-- [ ] Create transfer endpoints
+- [x] Create transfer endpoints
 - [ ] Create reporting endpoints
 - [ ] Add API tests
 - [ ] Connect the web interface

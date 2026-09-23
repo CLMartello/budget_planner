@@ -17,6 +17,10 @@ class TransactionUpdate(BaseModel):
     category: str
     description: str = ""
 
+class TransferCreate(BaseModel):
+    source: str
+    target: str
+    amount: float
 
 app = FastAPI(title="Budget Planner API")
 planner = BudgetPlanner()
@@ -126,3 +130,25 @@ def edit_latest_transaction(
     )
 
     return edited_transaction.to_dict()
+
+@app.post("/transfers", status_code=201)
+def transfers_funds(transfer: TransferCreate):
+    try:
+        planner.transfer_funds(
+            transfer.source,
+            transfer.target,
+            transfer.amount
+        )
+    except ValueError as error:
+        raise HTTPException(
+            status_code=400,
+            detail=str(error)
+        ) from error
+
+    planner.save()
+
+    return {
+        "source": transfer.source,
+        "target": transfer.target,
+        "amount": transfer.amount
+    }
