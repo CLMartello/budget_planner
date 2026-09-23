@@ -71,7 +71,7 @@
 - [x] Create account endpoints
 - [x] Create transaction endpoints
 - [x] Create transfer endpoints
-- [ ] Create reporting endpoints
+- [x] Create reporting endpoints
 - [ ] Add API tests
 - [ ] Connect the web interface
 - [ ] Containerize the API

@@ -407,3 +407,154 @@ def test_transfer_missing_account_returns_bad_request(
     assert response.json() == {
         "detail": "One or both accounts do not exist."
     }
+
+def test_get_financial_summary(tmp_path, monkeypatch):
+    test_file = tmp_path / "accounts.json"
+    test_planner = BudgetPlanner(storage_path=test_file)
+    test_planner.create_account("Personal")
+    test_planner.add_transaction(
+        "Personal",
+        100,
+        "Salary",
+        "Income"
+    )
+    test_planner.add_transaction(
+        "Personal",
+        -40,
+        "Food",
+        "Groceries"
+    )
+
+    monkeypatch.setattr(api, "planner", test_planner)
+
+    response = client.get("/reports/summary")
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "income": 100.0,
+        "expenses": 40.0,
+        "balance": 60.0
+    }
+
+def test_get_expense_breakdown(tmp_path, monkeypatch):
+    test_file = tmp_path / "accounts.json"
+    test_planner = BudgetPlanner(storage_path=test_file)
+    test_planner.create_account("Personal")
+    test_planner.add_transaction(
+        "Personal", -25, "Food", "Groceries"
+    )
+    test_planner.add_transaction(
+        "Personal", -15, "Transport", "Bus pass"
+    )
+    test_planner.add_transaction(
+        "Personal", -10, "Food", "Lunch"
+    )
+
+    monkeypatch.setattr(api, "planner", test_planner)
+
+    response = client.get("/reports/summary/by-category")
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "expenses": {
+            "Food": 35.0,
+            "Transport": 15.0
+        }
+    }
+
+def test_get_semester_balance(tmp_path, monkeypatch):
+    test_file = tmp_path / "accounts.json"
+    test_planner = BudgetPlanner(storage_path=test_file)
+    test_planner.create_account("Personal")
+    test_planner.add_transaction(
+		"Personal",
+		100,
+		"Salary",
+		"January income",
+		datetime(2026, 1, 15)
+	)
+    test_planner.add_transaction(
+		"Personal",
+		-30,
+		"Food",
+		"February expense",
+		datetime(2026, 2, 10)
+	)
+    test_planner.add_transaction(
+		"Personal",
+		200,
+		"Salary",
+		"August income",
+		datetime(2026, 8, 5)
+	)
+
+    monkeypatch.setattr(api, "planner", test_planner)
+
+    response = client.get(
+        "/accounts/Personal/reports/semester-balance",
+        params={"year": 2026, "semester": 1}
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "account": "Personal",
+        "year": 2026,
+        "semester": 1,
+        "balance": 70.0
+    }
+
+def test_get_semester_balance_invalid_semester_returns_bad_request(
+    tmp_path, 
+    monkeypatch
+):
+    test_file = tmp_path / "accounts.json"
+    test_planner = BudgetPlanner(storage_path=test_file)
+    test_planner.create_account("Personal")
+
+    monkeypatch.setattr(api, "planner", test_planner)
+
+    response = client.get(
+        "/accounts/Personal/reports/semester-balance",
+        params={"year": 2026, "semester": 3}
+    )
+
+    assert response.status_code == 400
+    assert response.json() == {
+        "detail": "Semester must be 1 or 2."
+    }
+
+def test_get_semester_balance_rejects_non_numeric_year(
+    tmp_path, 
+    monkeypatch
+):
+    test_file = tmp_path / "accounts.json"
+    test_planner = BudgetPlanner(storage_path=test_file)
+    test_planner.create_account("Personal")
+
+    monkeypatch.setattr(api, "planner", test_planner)
+
+    response = client.get(
+        "/accounts/Personal/reports/semester-balance",
+        params={"year": "not-a-year", "semester": 1}
+    )
+
+    assert response.status_code == 422
+
+def test_get_semester_balance_missing_account_returns_not_found(
+    tmp_path, 
+    monkeypatch
+):
+    test_file = tmp_path / "accounts.json"
+    test_planner = BudgetPlanner(storage_path=test_file)
+
+    monkeypatch.setattr(api, "planner", test_planner)
+
+    response = client.get(
+        "/accounts/Missing/reports/semester-balance",
+        params={"year": 2026, "semester": 1}
+    )
+
+    assert response.status_code == 404
+    assert response.json() == {
+        "detail": "Account does not exist."
+    }

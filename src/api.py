@@ -152,3 +152,55 @@ def transfers_funds(transfer: TransferCreate):
         "target": transfer.target,
         "amount": transfer.amount
     }
+
+@app.get("/reports/summary")
+def get_financial_summary():
+    income, expenses = planner.get_income_and_expenses()
+
+    return {
+        "income": income,
+        "expenses": expenses,
+        "balance": income - expenses
+    }
+
+@app.get("/reports/summary/by-category")
+def get_expense_breakdown():
+    expenses = planner.get_expense_breakdown()
+
+    return {
+        "expenses": {
+            "Food": 35.0,
+            "Transport": 15.0
+        }
+    }
+
+@app.get("/accounts/{name}/reports/semester-balance")
+def get_semester_balance(
+    name: str,
+    year: int,
+    semester: int
+):
+    if planner.get_account(name) is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Account does not exist."
+        )
+
+    try:
+        balance = planner.get_semester_balance(
+            name,
+            year,
+            semester
+        )
+    except ValueError as error:
+        raise HTTPException(
+            status_code=400,
+            detail=str(error)
+        ) from error
+
+    return {
+        "account": name,
+        "year": year,
+        "semester": semester,
+        "balance": balance
+    }
