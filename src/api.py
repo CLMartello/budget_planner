@@ -167,12 +167,7 @@ def get_financial_summary():
 def get_expense_breakdown():
     expenses = planner.get_expense_breakdown()
 
-    return {
-        "expenses": {
-            "Food": 35.0,
-            "Transport": 15.0
-        }
-    }
+    return {"expenses": expenses}
 
 @app.get("/accounts/{name}/reports/semester-balance")
 def get_semester_balance(
