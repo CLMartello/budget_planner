@@ -163,11 +163,97 @@ def test_list_transactions(tmp_path, monkeypatch):
         ]
     }
 
-def test_list_transactions_missing_account_returns_not_found(tmp_path, monkeypatch):
+def test_list_transactions_missing_account_returns_not_found(
+    tmp_path, 
+    monkeypatch
+):
     test_file = tmp_path / "accounts.json"
     test_planner = BudgetPlanner(storage_path=test_file)
 
+    monkeypatch.setattr(api, "planner", test_planner)
+
     response = client.get("/accounts/Missing/transactions")
+
+    assert response.status_code == 404
+    assert response.json() == {
+        "detail": "Account does not exist."
+    }
+
+def test_edit_latest_transaction(
+    tmp_path,
+    monkeypatch
+):
+    test_file = tmp_path / "accounts.json"
+    test_planner = BudgetPlanner(storage_path=test_file)
+    test_planner.create_account("Personal")
+    test_planner.add_transaction(
+        "Personal",
+        -25,
+        "Food",
+        "Lunch",
+        datetime(2026, 9, 21, 12, 30)
+    )
+
+    monkeypatch.setattr(api, "planner", test_planner)
+
+    response = client.patch(
+        "/accounts/Personal/transactions/latest",
+        json={
+            "amount": -30,
+            "category": "Restaurant",
+            "description": "Lunch with friends"
+        }
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "amount": -30,
+        "category": "Restaurant",
+        "description": "Lunch with friends",
+        "date": "2026-09-21T12:30:00"
+    }
+
+def test_edit_latest_transaction_with_empty_history_returns_not_found(
+    tmp_path, 
+    monkeypatch
+):
+    test_file = tmp_path / "accounts.json"
+    test_planner = BudgetPlanner(storage_path=test_file)
+    test_planner.create_account("Personal")
+
+    monkeypatch.setattr(api, "planner", test_planner)
+
+    response = client.patch(
+        "/accounts/Personal/transactions/latest",
+        json={
+            "amount": -30,
+            "category": "Restaurant",
+            "description": "Lunch with friends"
+        }
+    )
+
+    assert response.status_code == 404
+    assert response.json() == {
+        "detail": "No transactions to edit."
+    }
+
+def test_edit_latest_transaction_missing_account_returns_not_found(
+    tmp_path, 
+    monkeypatch
+):
+    test_file = tmp_path / "accounts.json"
+    test_planner = BudgetPlanner(storage_path=test_file)
+
+    monkeypatch.setattr(api, "planner", test_planner)
+
+    response = client.patch(
+        "/accounts/Missing/transactions/latest",
+        json={
+            "amount": -30,
+            "category": "Restaurant",
+            "description": "Lunch with friends"
+        }
+    )
 
     assert response.status_code == 404
     assert response.json() == {

@@ -12,6 +12,12 @@ class TransactionCreate(BaseModel):
     description: str = ""
     date: datetime | None = None
 
+class TransactionUpdate(BaseModel):
+    amount: float
+    category: str
+    description: str = ""
+
+
 app = FastAPI(title="Budget Planner API")
 planner = BudgetPlanner()
 
@@ -73,10 +79,10 @@ def create_transaction(
 
     planner.save()
 
-    create_transaction = (
+    created_transaction = (
         planner.get_account(name).transactions[-1]
     )
-    return create_transaction.to_dict()
+    return created_transaction.to_dict()
 
 @app.get("/accounts/{name}/transactions")
 def list_transactions(name: str):
@@ -94,3 +100,29 @@ def list_transactions(name: str):
             for transaction in account.transactions
         ]
     }
+
+@app.patch("/accounts/{name}/transactions/latest")
+def edit_latest_transaction(
+    name: str,
+    transaction: TransactionUpdate
+):
+    try:
+        planner.edit_last_transaction(
+            name,
+            transaction.amount,
+            transaction.category,
+            transaction.description
+        )
+    except ValueError as error:
+        raise HTTPException(
+            status_code=404,
+            detail=str(error)
+        ) from error
+
+    planner.save()
+
+    edited_transaction = (
+        planner.get_account(name).transactions[-1]
+    )
+
+    return edited_transaction.to_dict()
