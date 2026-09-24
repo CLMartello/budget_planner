@@ -132,7 +132,7 @@ def edit_latest_transaction(
     return edited_transaction.to_dict()
 
 @app.post("/transfers", status_code=201)
-def transfers_funds(transfer: TransferCreate):
+def transfer_funds(transfer: TransferCreate):
     try:
         planner.transfer_funds(
             transfer.source,
@@ -163,7 +163,7 @@ def get_financial_summary():
         "balance": income - expenses
     }
 
-@app.get("/reports/summary/by-category")
+@app.get("/reports/expenses/by-category")
 def get_expense_breakdown():
     expenses = planner.get_expense_breakdown()
 

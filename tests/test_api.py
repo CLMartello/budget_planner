@@ -452,7 +452,7 @@ def test_get_expense_breakdown(tmp_path, monkeypatch):
 
     monkeypatch.setattr(api, "planner", test_planner)
 
-    response = client.get("/reports/summary/by-category")
+    response = client.get("/reports/expenses/by-category")
 
     assert response.status_code == 200
     assert response.json() == {
@@ -566,7 +566,7 @@ def test_get_empty_expense_breakdown(tmp_path, monkeypatch):
     monkeypatch.setattr(api, "planner", test_planner)
 
     response = client.get(
-        "/reports/summary/by-category"
+        "/reports/expenses/by-category"
     )
 
     assert response.status_code == 200
