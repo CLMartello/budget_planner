@@ -558,3 +558,18 @@ def test_get_semester_balance_missing_account_returns_not_found(
     assert response.json() == {
         "detail": "Account does not exist."
     }
+
+def test_get_empty_expense_breakdown(tmp_path, monkeypatch):
+    test_file = tmp_path / "accounts.json"
+    test_planner = BudgetPlanner(storage_path=test_file)
+
+    monkeypatch.setattr(api, "planner", test_planner)
+
+    response = client.get(
+        "/reports/summary/by-category"
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "expenses": {}
+    }
