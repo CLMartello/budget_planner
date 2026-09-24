@@ -2,6 +2,8 @@ from fastapi import FastAPI, HTTPException
 from planner import BudgetPlanner
 from pydantic import BaseModel
 from datetime import datetime
+from pathlib import Path
+from fastapi.staticfiles import StaticFiles
 
 class AccountCreate(BaseModel):
     name: str
@@ -21,6 +23,8 @@ class TransferCreate(BaseModel):
     source: str
     target: str
     amount: float
+
+WEB_DIR = Path(__file__).resolve().parent.parent / "web"
 
 app = FastAPI(title="Budget Planner API")
 planner = BudgetPlanner()
@@ -199,3 +203,9 @@ def get_semester_balance(
         "semester": semester,
         "balance": balance
     }
+
+app.mount(
+    "/",
+    StaticFiles(directory=WEB_DIR, html=True),
+    name="web"
+)

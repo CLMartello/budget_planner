@@ -573,3 +573,9 @@ def test_get_empty_expense_breakdown(tmp_path, monkeypatch):
     assert response.json() == {
         "expenses": {}
     }
+
+def test_web_interface_is_served():
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert "Budget Planner" in response.text
