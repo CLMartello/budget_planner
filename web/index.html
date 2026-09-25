@@ -54,7 +54,11 @@
 					<p>Your finances, all in one place.</p>
 				</div>
 
-				<button class="preview-button" disabled>
+				<button
+					id="add-transaction-button"
+					class="preview-button"
+					disabled
+				>
 					+ Add transaction
 				</button>
 			</header>
@@ -107,6 +111,24 @@
 					<p id="semester-period" class="card-note">
 						Select an account and semester
 					</p>
+
+					<form id="semester-form" class="semester-form">
+						<label for="semester-year">Year</label>
+						<input
+							id="semester-year"
+							type="number"
+							min="1"
+							required
+						>
+
+						<label for="semester-number">Semester</label>
+						<select id="semester-number">
+							<option value="1">First</option>
+							<option value="2">Second</option>
+						</select>
+
+						<button type="submit">Calculate</button>
+					</form>
 				</article>
 			</section>
 
@@ -142,70 +164,54 @@
 				<section class="card">
 					<div class="section-header">
 						<h3>Recent transactions</h3>
-						<span>September 2026</span>
+						<span id="selected-account-name">Select an account</span>
 					</div>
 
-					<div class="transaction">
-						<div class="transaction-icon">↗</div>
-						<div>
-							<strong>Monthly salary</strong>
-							<br>
-							<small>Income</small>
-						</div>
-						<span class="amount">+€2,450.00</span>
-					</div>
+					<form id="transaction-form" hidden>
+						<label for="transaction-amount">Amount</label>
+						<input
+							id="transaction-amount"
+							type="number"
+							step="0.01"
+							required
+						>
 
-					<div class="transaction">
-						<div class="transaction-icon">⌂</div>
-						<div>
-							<strong>Rent</strong>
-							<br>
-							<small>Housing</small>
-						</div>
-						<span class="amount negative">−€780.00</span>
-					</div>
+						<label for="transaction-category">Category</label>
+						<input
+							id="transaction-category"
+							type="text"
+							required
+						>
 
-					<div class="transaction">
-						<div class="transaction-icon">●</div>
-						<div>
-							<strong>Groceries</strong>
-							<br>
-							<small>Food</small>
-						</div>
-						<span class="amount negative">−€64.20</span>
+						<label for="transaction-description">Description</label>
+						<input
+							id="transaction-description"
+							type="text"
+						>
+
+						<label for="transaction-date">Date</label>
+						<input
+							id="transaction-date"
+							type="datetime-local"
+						>
+
+						<button type="submit">Save transaction</button>
+						<p id="transaction-message" role="status"></p>
+					</form>
+
+					<div id="transactions-list">
+						<p>Select an account to view its transactions.</p>
 					</div>
 				</section>
 
 				<section class="card categories">
 					<div class="section-header">
 						<h3>Expense breakdown</h3>
-						<span>This month</span>
+						<span>All recorded expenses</span>
 					</div>
 
-					<div class="category-grid">
-						<div class="category">
-							<span>⌂ Housing</span>
-							<strong>€780.00</strong>
-							<small>61% of expenses</small>
-						</div>
-
-						<div class="category">
-							<span>● Food</span>
-							<strong>€245.00</strong>
-							<small>19% of expenses</small>
-						</div>
-
-						<div class="category">
-							<span>↔ Transport</span>
-							<strong>€140.00</strong>
-							<small>11% of expenses</small>
-						</div>
-
-						<div class="category">
-							<span>＋ Other</span>
-							<strong>€115.00</strong>
-							<small>9% of expenses</small>
-						</div>
+					<div id="expense-breakdown" class="category-grid">
+						<p>Loading expense breakdown...</p>
 					</div>
 				</section>
 			</div>
